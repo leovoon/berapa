@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, customRef, shallowRef, onUnmounted } from 'vue'
-import { findCombinations } from '../utils/denominationUtils'
 import DenominationList from './DenominationList.vue'
 import { ALL_DENOMINATIONS, formatCurrency } from '../config/denominations'
 import type { DenominationBreakdown } from '../utils/denominationUtils'

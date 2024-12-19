@@ -3,7 +3,7 @@ import type { DenominationBreakdown } from '../utils/denominationUtils'
 import { calculateTotal } from '../utils/denominationUtils'
 import { formatCurrency, getDenominationColor } from '../config/denominations'
 
-const props = defineProps<{
+defineProps<{
   breakdown: DenominationBreakdown
   denominations: number[]
 }>()
