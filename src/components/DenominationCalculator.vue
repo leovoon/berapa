@@ -7,7 +7,7 @@ import type { DenominationBreakdown } from '../utils/denominationUtils'
 import { useAutoAnimate } from '@formkit/auto-animate/vue'
 import { useLocalStorage } from '../composables/useLocalStorage'
 
-const ITEMS_PER_PAGE = 20
+const ITEMS_PER_PAGE = 5
 const amountInput = ref<HTMLInputElement | null>(null)
 
 // Convert existing refs to use localStorage
@@ -172,6 +172,11 @@ function useDebouncedRef<T>(value: T, delay = 200) {
     }
   })
 }
+
+function handleSubtractDenomination(value: number) {
+  const newAmount = Math.max(0, Number((amount.value - value).toFixed(2)))
+  amount.value = newAmount
+}
 </script>
 
 <template>
@@ -218,7 +223,8 @@ function useDebouncedRef<T>(value: T, delay = 200) {
       <template v-if="showAllCombinations">
         <div v-for="(combination, index) in paginatedCombinations" :key="index">
           <p class="combination-title">Combination {{ (currentPage - 1) * ITEMS_PER_PAGE + index + 1 }}</p>
-          <DenominationList :breakdown="combination" :denominations="availableDenominations" />
+          <DenominationList :breakdown="combination" :denominations="availableDenominations"
+            @subtract-denomination="handleSubtractDenomination" />
         </div>
 
         <div v-if="totalPages > 1" class="pagination">
@@ -234,7 +240,8 @@ function useDebouncedRef<T>(value: T, delay = 200) {
         </div>
       </template>
       <template v-else>
-        <DenominationList :breakdown="currentCombination" :denominations="availableDenominations" />
+        <DenominationList :breakdown="currentCombination" :denominations="availableDenominations"
+          @subtract-denomination="handleSubtractDenomination" />
       </template>
     </div>
   </div>
@@ -367,7 +374,6 @@ label {
 
 .combination-title {
   text-align: left;
-  color: #b5bac4;
 }
 
 .pagination {

@@ -3,9 +3,13 @@ import type { DenominationBreakdown } from '../utils/denominationUtils'
 import { calculateTotal } from '../utils/denominationUtils'
 import { formatCurrency, getDenominationColor } from '../config/denominations'
 
-defineProps<{
+const props = defineProps<{
   breakdown: DenominationBreakdown
   denominations: number[]
+}>()
+
+const emit = defineEmits<{
+  (e: 'subtractDenomination', value: number): void
 }>()
 </script>
 
@@ -18,7 +22,7 @@ defineProps<{
       class="denomination-item" :style="{
         backgroundColor: getDenominationColor(denomination) + '1A',
         borderLeft: `4px solid ${getDenominationColor(denomination)}`
-      }">
+      }" @click="emit('subtractDenomination', denomination)" role="button" tabindex="0">
       <div class="denomination-info">
         <span class="denomination" :style="{ color: getDenominationColor(denomination) }">
           {{ formatCurrency(denomination) }}
@@ -52,6 +56,16 @@ defineProps<{
   background: white;
   border-radius: 6px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+.denomination-item:hover {
+  transform: scale(1.01);
+}
+
+.denomination-item:active {
+  transform: scale(0.99);
 }
 
 .denomination-info {
