@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { DenominationBreakdown } from '../utils/denominationUtils'
 import { calculateTotal } from '../utils/denominationUtils'
-import { formatCurrency } from '../config/denominations'
+import { formatCurrency, getDenominationColor } from '../config/denominations'
 
 defineProps<{
   breakdown: DenominationBreakdown
@@ -11,21 +11,23 @@ defineProps<{
 
 <template>
   <div class="denomination-list">
-    <div 
-      v-for="denomination in denominations" 
-      :key="denomination"
-      class="denomination-item"
-    >
-      <div class="denomination-info">
-        <span class="denomination">{{ formatCurrency(denomination) }}</span>
-        <span class="count">× {{ breakdown[denomination] || 0 }}</span>
-      </div>
-      <span class="subtotal" v-if="breakdown[denomination]">
-        = RM{{ (denomination * breakdown[denomination]).toFixed(2) }}
-      </span>
-    </div>
     <div class="total">
       Total: RM{{ calculateTotal(breakdown).toFixed(2) }}
+    </div>
+    <div v-for="denomination in denominations" :key="denomination" v-show="breakdown[denomination] > 0"
+      class="denomination-item" :style="{
+        backgroundColor: getDenominationColor(denomination) + '1A',
+        borderLeft: `4px solid ${getDenominationColor(denomination)}`
+      }">
+      <div class="denomination-info">
+        <span class="denomination" :style="{ color: getDenominationColor(denomination) }">
+          {{ formatCurrency(denomination) }}
+        </span>
+        <span class="count">× {{ breakdown[denomination] || 0 }}</span>
+      </div>
+      <span class="subtotal">
+        = RM{{ (denomination * (breakdown[denomination] || 0)).toFixed(2) }}
+      </span>
     </div>
   </div>
 </template>
@@ -60,7 +62,6 @@ defineProps<{
 
 .denomination {
   font-weight: bold;
-  color: #2563eb;
   min-width: 60px;
 }
 
@@ -75,9 +76,9 @@ defineProps<{
 }
 
 .total {
-  margin-top: 1rem;
-  padding-top: 1rem;
-  border-top: 2px solid #e5e7eb;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #e5e7eb;
   font-weight: bold;
   font-size: 1.1rem;
   color: #1e3a8a;

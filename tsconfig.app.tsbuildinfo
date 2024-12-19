@@ -1,0 +1,1 @@
+{"root":["./src/main.ts","./src/vite-env.d.ts","./src/composables/useLocalStorage.ts","./src/config/denominations.ts","./src/utils/denominationUtils.ts","./src/workers/combinationsWorker.ts","./src/App.vue","./src/components/DenominationCalculator.vue","./src/components/DenominationList.vue","./src/components/Footer.vue"],"version":"5.7.2"}
